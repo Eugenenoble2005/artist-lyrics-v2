@@ -19,8 +19,8 @@ class Genius
     artist_id = get_artist_id(artist)
 
     #just check the first 15 pages for a song, can be increased for more songs
-    random_page = rand(0..15)
-    response_body  = get_request("https://api.genius.com/artists/#{artist_id}/songs?sort=popularity&?page=#{random_page}")
+    random_page = rand(1..20)
+    response_body  = get_request("https://api.genius.com/artists/#{artist_id}/songs?sort=popularity&page=#{random_page}")
     songs_count = response_body["response"]["songs"].length()
 
     random_song_index = rand(0..songs_count-1)
