@@ -17,6 +17,8 @@ class Genius
 
   def get_random_lyric_by_artist(artist)
     artist_id = get_artist_id(artist)
+
+    #just check the first 15 pages for a song, can be increased for more songs
     random_page = rand(0..15)
     response_body  = get_request("https://api.genius.com/artists/#{artist_id}/songs?sort=popularity&?page=#{random_page}")
     songs_count = response_body["response"]["songs"].length()
@@ -31,7 +33,11 @@ class Genius
     lyrics = [];
     doc.xpath("//a[contains(@class,'ReferentFragmentdesktop__ClickTarget-sc-110r0d9-0')]").each {
       |a|
-      lyrics.push(a.content)
+      # Replace <br> tags with spaces in the inner HTML
+      cleaned_content = a.inner_html.gsub(/<br\s*\/?>/, ' ')
+      # Parse it again to get the plain text,
+      lyrics.push(Nokogiri::HTML.fragment(cleaned_content).text)
+      #lyrics.push(a.content)
     }
     random_lyric_index = rand(0..lyrics.length()-1)
 
