@@ -6,7 +6,7 @@ end
 
 artist = ARGV[1];
 
-genius = Genius.new("");
+genius = Genius.new(ENV["GENIUS_API_KEY"]);
 cache_file_path = "cache.txt"
 
 
@@ -27,7 +27,7 @@ rescue
    #could not get lyric for whatever reason. Read from cache instead
    lines = File.readlines(cache_file_path)
    random_line = lines.sample
- #  puts "[CACHE]" + " + " +  random_line
+   puts "[CACHE]:" + random_line
 end 
 
  
