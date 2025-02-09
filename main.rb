@@ -29,5 +29,3 @@ rescue
    random_line = lines.sample
    puts "[CACHE]:" + random_line
 end 
-
- 

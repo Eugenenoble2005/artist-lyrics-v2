@@ -6,9 +6,8 @@ require "open-uri"
 class Genius
   def initialize(api_key)
     @api_key = api_key
-  end 
-
- 
+  end
+   
  private def get_artist_id(artist)
     response_body = get_request("https://api.genius.com/search?q=#{artist}")
     artist_id = response_body["response"]["hits"][0]["result"]["primary_artist"]["id"]
@@ -19,7 +18,7 @@ class Genius
     artist_id = get_artist_id(artist)
 
     #just check the first 15 pages for a song, can be increased for more songs
-    random_page = rand(1..20)
+    random_page = rand(1..5)
     response_body  = get_request("https://api.genius.com/artists/#{artist_id}/songs?sort=popularity&page=#{random_page}")
     songs_count = response_body["response"]["songs"].length()
 
@@ -30,8 +29,9 @@ class Genius
 
     #web scrape
     doc = Nokogiri::HTML(URI.open(random_song_url))
+    # puts random_song_url
     lyrics = [];
-    doc.xpath("//a[contains(@class,'ReferentFragmentdesktop__ClickTarget-sc-110r0d9-0')]").each {
+    doc.xpath("//div[@id='lyrics-root']//a").each {
       |a|
       # Replace <br> tags with spaces in the inner HTML
       cleaned_content = a.inner_html.gsub(/<br\s*\/?>/, ' ')
